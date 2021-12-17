@@ -610,6 +610,10 @@
     "message": "Dark",
     "description": "Dark color"
   },
+  "night": {
+    "message": "Night",
+    "description": "Night color"
+  },
   "light": {
     "message": "Light",
     "description": "Light color"

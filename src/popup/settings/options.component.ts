@@ -1,7 +1,4 @@
-import {
-    Component,
-    OnInit,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { ThemeType } from 'jslib-common/enums/themeType';
 import { UriMatchType } from 'jslib-common/enums/uriMatchType';
@@ -41,20 +38,35 @@ export class OptionsComponent implements OnInit {
     showAutofill: boolean = true;
     showDisplay: boolean = true;
 
-    constructor(private messagingService: MessagingService, private storageService: StorageService,
-        private stateService: StateService, private totpService: TotpService, i18nService: I18nService) {
+    constructor(
+        private messagingService: MessagingService,
+        private storageService: StorageService,
+        private stateService: StateService,
+        private totpService: TotpService,
+        i18nService: I18nService
+    ) {
         this.themeOptions = [
             { name: i18nService.t('default'), value: null },
             { name: i18nService.t('light'), value: ThemeType.Light },
             { name: i18nService.t('dark'), value: ThemeType.Dark },
+            { name: i18nService.t('night'), value: ThemeType.Night },
             { name: 'Nord', value: ThemeType.Nord },
-            { name: i18nService.t('solarizedDark'), value: ThemeType.SolarizedDark },
+            {
+                name: i18nService.t('solarizedDark'),
+                value: ThemeType.SolarizedDark,
+            },
         ];
         this.uriMatchOptions = [
             { name: i18nService.t('baseDomain'), value: UriMatchType.Domain },
             { name: i18nService.t('host'), value: UriMatchType.Host },
-            { name: i18nService.t('startsWith'), value: UriMatchType.StartsWith },
-            { name: i18nService.t('regEx'), value: UriMatchType.RegularExpression },
+            {
+                name: i18nService.t('startsWith'),
+                value: UriMatchType.StartsWith,
+            },
+            {
+                name: i18nService.t('regEx'),
+                value: UriMatchType.RegularExpression,
+            },
             { name: i18nService.t('exact'), value: UriMatchType.Exact },
             { name: i18nService.t('never'), value: UriMatchType.Never },
         ];
@@ -75,84 +87,147 @@ export class OptionsComponent implements OnInit {
 
     async ngOnInit() {
         this.enableAutoFillOnPageLoad = await this.storageService.get<boolean>(
-            ConstantsService.enableAutoFillOnPageLoadKey);
+            ConstantsService.enableAutoFillOnPageLoadKey
+        );
 
-        this.autoFillOnPageLoadDefault = await this.storageService.get<boolean>(
-            ConstantsService.autoFillOnPageLoadDefaultKey) ?? true;
+        this.autoFillOnPageLoadDefault =
+            (await this.storageService.get<boolean>(
+                ConstantsService.autoFillOnPageLoadDefaultKey
+            )) ?? true;
 
-        this.disableAddLoginNotification = await this.storageService.get<boolean>(
-            ConstantsService.disableAddLoginNotificationKey);
+        this.disableAddLoginNotification =
+            await this.storageService.get<boolean>(
+                ConstantsService.disableAddLoginNotificationKey
+            );
 
-        this.disableChangedPasswordNotification = await this.storageService.get<boolean>(
-            ConstantsService.disableChangedPasswordNotificationKey);
+        this.disableChangedPasswordNotification =
+            await this.storageService.get<boolean>(
+                ConstantsService.disableChangedPasswordNotificationKey
+            );
 
         this.disableContextMenuItem = await this.storageService.get<boolean>(
-            ConstantsService.disableContextMenuItemKey);
+            ConstantsService.disableContextMenuItemKey
+        );
 
-        this.dontShowCards = await this.storageService.get<boolean>(ConstantsService.dontShowCardsCurrentTab);
-        this.dontShowIdentities = await this.storageService.get<boolean>(ConstantsService.dontShowIdentitiesCurrentTab);
+        this.dontShowCards = await this.storageService.get<boolean>(
+            ConstantsService.dontShowCardsCurrentTab
+        );
+        this.dontShowIdentities = await this.storageService.get<boolean>(
+            ConstantsService.dontShowIdentitiesCurrentTab
+        );
 
-        this.disableAutoTotpCopy = !(await this.totpService.isAutoCopyEnabled());
+        this.disableAutoTotpCopy =
+            !(await this.totpService.isAutoCopyEnabled());
 
-        this.disableFavicon = await this.storageService.get<boolean>(ConstantsService.disableFaviconKey);
+        this.disableFavicon = await this.storageService.get<boolean>(
+            ConstantsService.disableFaviconKey
+        );
 
-        this.disableBadgeCounter = await this.storageService.get<boolean>(ConstantsService.disableBadgeCounterKey);
+        this.disableBadgeCounter = await this.storageService.get<boolean>(
+            ConstantsService.disableBadgeCounterKey
+        );
 
-        this.theme = await this.storageService.get<string>(ConstantsService.themeKey);
+        this.theme = await this.storageService.get<string>(
+            ConstantsService.themeKey
+        );
 
-        const defaultUriMatch = await this.storageService.get<UriMatchType>(ConstantsService.defaultUriMatch);
-        this.defaultUriMatch = defaultUriMatch == null ? UriMatchType.Domain : defaultUriMatch;
+        const defaultUriMatch = await this.storageService.get<UriMatchType>(
+            ConstantsService.defaultUriMatch
+        );
+        this.defaultUriMatch =
+            defaultUriMatch == null ? UriMatchType.Domain : defaultUriMatch;
 
-        this.clearClipboard = await this.storageService.get<number>(ConstantsService.clearClipboardKey);
+        this.clearClipboard = await this.storageService.get<number>(
+            ConstantsService.clearClipboardKey
+        );
     }
 
     async updateAddLoginNotification() {
-        await this.storageService.save(ConstantsService.disableAddLoginNotificationKey,
-            this.disableAddLoginNotification);
+        await this.storageService.save(
+            ConstantsService.disableAddLoginNotificationKey,
+            this.disableAddLoginNotification
+        );
     }
 
     async updateChangedPasswordNotification() {
-        await this.storageService.save(ConstantsService.disableChangedPasswordNotificationKey,
-            this.disableChangedPasswordNotification);
+        await this.storageService.save(
+            ConstantsService.disableChangedPasswordNotificationKey,
+            this.disableChangedPasswordNotification
+        );
     }
 
     async updateDisableContextMenuItem() {
-        await this.storageService.save(ConstantsService.disableContextMenuItemKey,
-            this.disableContextMenuItem);
+        await this.storageService.save(
+            ConstantsService.disableContextMenuItemKey,
+            this.disableContextMenuItem
+        );
         this.messagingService.send('bgUpdateContextMenu');
     }
 
     async updateAutoTotpCopy() {
-        await this.storageService.save(ConstantsService.disableAutoTotpCopyKey, this.disableAutoTotpCopy);
+        await this.storageService.save(
+            ConstantsService.disableAutoTotpCopyKey,
+            this.disableAutoTotpCopy
+        );
     }
 
     async updateAutoFillOnPageLoad() {
-        await this.storageService.save(ConstantsService.enableAutoFillOnPageLoadKey, this.enableAutoFillOnPageLoad);
+        await this.storageService.save(
+            ConstantsService.enableAutoFillOnPageLoadKey,
+            this.enableAutoFillOnPageLoad
+        );
     }
 
     async updateAutoFillOnPageLoadDefault() {
-        await this.storageService.save(ConstantsService.autoFillOnPageLoadDefaultKey, this.autoFillOnPageLoadDefault);
+        await this.storageService.save(
+            ConstantsService.autoFillOnPageLoadDefaultKey,
+            this.autoFillOnPageLoadDefault
+        );
     }
 
     async updateDisableFavicon() {
-        await this.storageService.save(ConstantsService.disableFaviconKey, this.disableFavicon);
-        await this.stateService.save(ConstantsService.disableFaviconKey, this.disableFavicon);
+        await this.storageService.save(
+            ConstantsService.disableFaviconKey,
+            this.disableFavicon
+        );
+        await this.stateService.save(
+            ConstantsService.disableFaviconKey,
+            this.disableFavicon
+        );
     }
 
     async updateDisableBadgeCounter() {
-        await this.storageService.save(ConstantsService.disableBadgeCounterKey, this.disableBadgeCounter);
-        await this.stateService.save(ConstantsService.disableBadgeCounterKey, this.disableBadgeCounter);
+        await this.storageService.save(
+            ConstantsService.disableBadgeCounterKey,
+            this.disableBadgeCounter
+        );
+        await this.stateService.save(
+            ConstantsService.disableBadgeCounterKey,
+            this.disableBadgeCounter
+        );
         this.messagingService.send('bgUpdateContextMenu');
     }
 
     async updateShowCards() {
-        await this.storageService.save(ConstantsService.dontShowCardsCurrentTab, this.dontShowCards);
-        await this.stateService.save(ConstantsService.dontShowCardsCurrentTab, this.dontShowCards);
+        await this.storageService.save(
+            ConstantsService.dontShowCardsCurrentTab,
+            this.dontShowCards
+        );
+        await this.stateService.save(
+            ConstantsService.dontShowCardsCurrentTab,
+            this.dontShowCards
+        );
     }
 
     async updateShowIdentities() {
-        await this.storageService.save(ConstantsService.dontShowIdentitiesCurrentTab, this.dontShowIdentities);
-        await this.stateService.save(ConstantsService.dontShowIdentitiesCurrentTab, this.dontShowIdentities);
+        await this.storageService.save(
+            ConstantsService.dontShowIdentitiesCurrentTab,
+            this.dontShowIdentities
+        );
+        await this.stateService.save(
+            ConstantsService.dontShowIdentitiesCurrentTab,
+            this.dontShowIdentities
+        );
     }
 
     async saveTheme() {
@@ -161,10 +236,16 @@ export class OptionsComponent implements OnInit {
     }
 
     async saveDefaultUriMatch() {
-        await this.storageService.save(ConstantsService.defaultUriMatch, this.defaultUriMatch);
+        await this.storageService.save(
+            ConstantsService.defaultUriMatch,
+            this.defaultUriMatch
+        );
     }
 
     async saveClearClipboard() {
-        await this.storageService.save(ConstantsService.clearClipboardKey, this.clearClipboard);
+        await this.storageService.save(
+            ConstantsService.clearClipboardKey,
+            this.clearClipboard
+        );
     }
 }
